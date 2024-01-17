@@ -1,0 +1,12 @@
+{
+    "name": "mrbab/phpiggy",
+    "description": "A PHP Application for tracking expenses",
+    "type": "project",
+    "require": {},
+    "autoload": {
+        "psr-4" : {
+            "Framework\\": "src/Framework",
+            "App\\": "src/Application"
+        }
+    }
+}
