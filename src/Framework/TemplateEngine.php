@@ -14,7 +14,7 @@ class TemplateEngine
     public function render(string $template, array $data = []) //: void
     {
         extract($data, EXTR_SKIP);
-        ob_start(); // Turn on output buffering. The contend won't sent unless we say it directly or limit 4096 would be violated
+        ob_start(); // Turn on output buffering. The content won't be sent unless we say it directly or limit 4096 would be violated
 
         include $this->resolve($template);
         $output = ob_get_contents(); // Return the content of the output buffer
