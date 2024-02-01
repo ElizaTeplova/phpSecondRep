@@ -11,7 +11,6 @@ class HomeController
 {
     public function __construct(private TemplateEngine $view)
     {
-        // $this->view = new TemplateEngine(Paths::VIEW);
     }
 
     public function home(): void
@@ -21,5 +20,3 @@ class HomeController
         ]);
     }
 }
-// "App\Controllers\HomeController"
-// "App\Controllers\HomeController.php"
