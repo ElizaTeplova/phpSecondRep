@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Framework\TemplateEngine;
+use Framework\TemplateEngine, Database;
 use App\Config\Paths;
 use App\Services\ValidatorService;
 
