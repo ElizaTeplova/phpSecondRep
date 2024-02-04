@@ -1,49 +1,35 @@
 <?php
 
 require __DIR__ . "/vendor/autoload.php";
-// include __DIR__ . "/src/Framework/Database.php";
 include __DIR__ . "/vendor/vlucas/phpdotenv/src/Dotenv.php";
 
 use Framework\Database;
 use Dotenv\Dotenv;
+use App\Services\LogAPIService;
+use App\Config\RequestParams;
 
+$logApi = new LogAPIService();
 $dotenv = Dotenv::createImmutable('./');
 $dotenv->load();
 
-$db = new Database($_ENV['DB_DRIVER'], [
-    'host' => $_ENV['DB_HOST'],
-    'port' => $_ENV['DB_PORT'],
-    'dbname' => $_ENV['DB_NAME']
-], $_ENV['DB_USER'], $_ENV['DB_PASS']);
+// $db = new Database($_ENV['DB_DRIVER'], [
+//     'host' => $_ENV['DB_HOST'],
+//     'port' => $_ENV['DB_PORT'],
+//     'dbname' => $_ENV['DB_NAME']
+// ], $_ENV['DB_USER'], $_ENV['DB_PASS']);
 
-// $db = new Database('mysql', [
-//     'host' => 'localhost',
-//     'port' => 3306,
-//     'dbname' => 'db_edu'
-// ], 'root', '');
 
-$sqlFile = file_get_contents('./database.sql');
+// $sqlFile = file_get_contents('./database.sql');
 
-$db->query($sqlFile);
-// try {
-//     $db->connection->beginTransaction();
-//     $db->connection->query("INSERT INTO products VALUES(99, 'Gloves')");
+// $db->query($sqlFile);
 
-//     $search = 'Hats';
-//     $query = "SELECT * FROM products WHERE name=:name";
-//     // $stmt = $db->connection->query($query);
-//     $stmt = $db->connection->prepare($query);
+$url = "https://api-metrika.yandex.net/management/v1/counter/{$_ENV['COUNTER_ID']}/logrequests";
+$authorization = "Authorization: Bearer " . $_ENV['TOKEN'];
+$params = new RequestParams();
 
-//     $stmt->bindValue('name', 'Gloves', PDO::PARAM_STR);
-//     $stmt->execute();
-
-//     var_dump($stmt->fetchAll(PDO::FETCH_OBJ));
-
-//     $db->connection->commit();
-// } catch (Exception $error) {
-//     if ($db->connection->inTransaction()) {
-//         $db->connection->rollBack();
-//     }
-
-//     echo 'Transaction failed';
-// }
+// $logApi->downloadParts($_ENV['COUNTER_ID'], $_ENV['TOKEN'], "33774617", 2);
+$logApi->getCsvData($_ENV['COUNTER_ID'], $_ENV['TOKEN'], $params->getParams());
+// $logApi->evaluateRequest($counterId, $token, $params)
+$logApi->createLogs($_ENV['COUNTER_ID'], $_ENV['TOKEN'], $params->getParams());
+$logApi->getPartNumbers($_ENV['COUNTER_ID'], $_ENV['TOKEN'], requestId: '');
+$logApi->downloadParts($_ENV['COUNTER_ID'], $_ENV['TOKEN'], requestId: '', partNums: 2);

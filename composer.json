@@ -16,6 +16,6 @@
         ]
     },
     "scripts" : {
-        "phpiggy" : "php cli.php"
+        "intervolga" : "php cli.php"
     }
 }
