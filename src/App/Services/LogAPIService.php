@@ -124,20 +124,25 @@ class LogAPIService
     public function downloadParts(string $counterId, string $token, string $requestId, int $partNums): string
     {
         $authorization = $this->authStr($token);
-        $header = array('Content-Type: application/json', $authorization);
+        $header = array('Content-Type: text/csv', $authorization);
         $fileAll = "log_counter_{$counterId}_request_{$requestId}_all.csv";
 
         for ($i = 0; $i < $partNums; $i++) {
             $url = $this::BASE_URL . "/{$counterId}/logrequest/{$requestId}/part/{$i}/download";
-            $responseCsv = $this->downloadCsvPart($url, $header, $i);
+            $responseTsv = $this->downloadCsvPart($url, $header, $i);
 
+            $responseTsv = explode("\n", $responseTsv); // now its array
             if (file_exists($fileAll) && filesize($fileAll) > 0) {
-                $rows = explode("\n", $responseCsv);
-                unset($rows[0]);
-                $responseCsv = implode("\n", $rows);
+                unset($responseTsv[0]);
             }
 
-            file_put_contents($fileAll, $responseCsv, FILE_APPEND);
+            $fp = fopen("{$fileAll}", 'a');
+            foreach ($responseTsv as $line) {
+                $field = explode("\t", $line);
+                fputcsv($fp, $field);
+            }
+            fclose($fp);
+
             print_r("Part {$i} was placed into {$fileAll} file\n");
         }
         print_r("File {$fileAll} was saved\n");
@@ -164,8 +169,11 @@ class LogAPIService
             throw new HttpException($error);
         }
 
-        $responseCsv = str_replace("\t", ",", $responseTsv);
-        return $responseCsv;
+        // $responseCsv = str_replace(",к", "к", $responseTsv);
+        // $responseCsv = str_replace("\t", ",", $responseTsv);
+        // $responseCsv = str_replace("[", "\"[", $responseTsv);
+        // $responseCsv = str_replace("]", "]\"", $responseCsv);
+        return $responseTsv;
     }
 
     private function getErrorMessage(string $response): string
