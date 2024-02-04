@@ -28,6 +28,16 @@ class AuthController
     public function register(): void
     {
         $this->validatorService->validateRegister($_POST);
-        // dd($_POST);
+
+        $this->userService->isEmailTaken($_POST['email']);
+
+        $this->userService->create($_POST);
+
+        redirectTo("/");
+    }
+
+    public function loginView(): void
+    {
+        echo $this->view->render('/login.php');
     }
 }

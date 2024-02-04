@@ -10,9 +10,11 @@ class MatchRule implements RuleInterface
 {
     public function validate(array $data, string $field, array $params): bool
     {
-        $fieldOne = $field;
+        $fieldOne = $data[$field];
         $fieldTwo = $data[$params[0]];
-
+        // var_dump($fieldOne);
+        // var_dump($fieldTwo);
+        // dd([]);
         return $fieldOne === $fieldTwo;
     }
 
