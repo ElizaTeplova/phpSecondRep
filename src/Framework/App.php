@@ -29,18 +29,27 @@ class App
         $this->router->dispatch($path, $method, $this->container);
     }
 
-    public function get(string $path, array $controller): void
+    public function get(string $path, array $controller): App
     {
         $this->router->add('GET', $path, $controller);
+
+        return $this;
     }
 
-    public function post(string $path, array $controller): void
+    public function post(string $path, array $controller): App
     {
         $this->router->add('POST', $path, $controller);
+
+        return $this;
     }
 
-    public function addMiddleware(string $middleware)
+    public function addMiddleware(string $middleware): void
     {
         $this->router->addMiddleware($middleware);
+    }
+
+    public function add(string $middleware): void
+    {
+        $this->router->addRouteMiddleware($middleware);
     }
 }
