@@ -46,4 +46,9 @@ class Database
     {
         return $this->stmt->fetch(); // FALSE is returned on failure.
     }
+
+    public function id()
+    {
+        return $this->connection->lastInsertId();
+    }
 }
