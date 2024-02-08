@@ -17,16 +17,17 @@ class Database
         string $username,
         string $password
     ) {
-        $driver = 'mysql';
+        // $driver = 'mysql';
         $config = http_build_query(data: $config, arg_separator: ';');
 
         $dsn = "{$driver}:{$config}";
+        // print_r($dsn);
         try {
             $this->connection = new PDO($dsn, $username, $password, [
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
             ]);
         } catch (PDOException $e) {
-            die("Unable to connect to database");
+            die("Unable to connect to database: {$e->getMessage()}");
         }
     }
 
@@ -50,5 +51,10 @@ class Database
     public function id()
     {
         return $this->connection->lastInsertId();
+    }
+
+    public function findAll()
+    {
+        return $this->stmt->fetchAll();
     }
 }
