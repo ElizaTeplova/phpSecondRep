@@ -40,6 +40,8 @@ class RequestParams
                 'ym:s:deviceCategory',      # Тип устройства. Возможные значения: 1 — десктоп, 2 — мобильные телефоны, 3 — планшеты, 4 — TV
                 'ym:s:operatingSystem',     # Операционная система (детально)
                 'ym:s:browser',
+                'ym:s:lastTrafficSource', # Источник трафика
+                'ym:s:lastUTMCampaign'
             ];
         }
     }

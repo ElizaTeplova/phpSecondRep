@@ -25,7 +25,7 @@ $dotenv->load();
 
 $url = "https://api-metrika.yandex.net/management/v1/counter/{$_ENV['COUNTER_ID']}/logrequests";
 $authorization = "Authorization: Bearer " . $_ENV['TOKEN'];
-$params = new RequestParams(date1: date('Y-m-d', strtotime('-91 days')));
+$params = new RequestParams(date1: date('Y-m-d', strtotime('-181 days')));
 
 // $logApi->downloadParts($_ENV['COUNTER_ID'], $_ENV['TOKEN'], "33774617", 2);
 $logApi->getCsvData($_ENV['COUNTER_ID'], $_ENV['TOKEN'], $params->getParams(), false);
